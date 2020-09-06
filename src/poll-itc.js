@@ -1,4 +1,4 @@
-const poster = require("./src/post-update.js")
+const poster = require("./post-update.js")
 const dirty = require("dirty")
 const db = dirty("kvstore.db")
 const debug = false
