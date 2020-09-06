@@ -9,7 +9,7 @@ function postToSlack(appInfo, submissionStartDate) {
         "attachments" : [attachment],
         "as_user" : "true"
     }
-    const channel = process.env.SLACK_CHANNEL_NAME
+    var channel = process.env.SLACK_CHANNEL_NAME
     if (!channel) {
         channel = "#ios-app-updates"
     }
