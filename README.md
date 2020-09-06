@@ -90,7 +90,7 @@ forever start src/poll-itc.js
 
 # Project Structure
 
-### get-app-status.rb
+### fetch-app-status.rb
 Ruby script that uses [Spaceship](https://github.com/fastlane/fastlane/tree/master/spaceship) to connect to App Store Connect. It then stdouts a JSON blob with your app info.
 
 ### poll-itc.js

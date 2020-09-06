@@ -8,7 +8,7 @@ function checkAppStatus() {
     console.log("Fetching latest app status...")
     // Invoke ruby script to grab latest app status
     const exec = require("child_process").exec
-    exec("ruby src/get-app-status.rb", function(err, stdout, stderr) {
+    exec("ruby src/fetch-app-status.rb", function(err, stdout, stderr) {
         if (stdout) {
             console.log(stdout)
             // Compare new app info with last one (from database)
