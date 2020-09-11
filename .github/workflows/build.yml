@@ -13,6 +13,7 @@ jobs:
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: "2.6"
+      - run: gem install bundler:2.1.4
       - run: bundle install
       - run: npm install
       - run: npm run lint
