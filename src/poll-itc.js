@@ -34,7 +34,7 @@ function checkAppStatus() {
 
 function _checkAppStatus(version) {
     // Use the live version if edit version is unavailable
-    const currentAppInfo = version["editVersion"] ? version["editVersion"] : version["liveVersion"]
+    const currentAppInfo = version["app_version"]
     const appInfoKey = "appInfo-" + currentAppInfo.appId
     const submissionStartkey = "submissionStart" + currentAppInfo.appId
     const lastAppInfo = db.get(appInfoKey)
