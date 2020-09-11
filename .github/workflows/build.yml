@@ -17,3 +17,4 @@ jobs:
       - run: bundle install
       - run: npm install
       - run: npm run lint
+      - run: bundle exec rubocop
