@@ -2,6 +2,9 @@
   <img width=100 src="docs/assets/app-icon.png">
   <h1>App Store Connect Notifier</h1>
   <p><strong>Get those App Store Connect notifications delivered directly to Slack.</strong></p>
+  <a href="https://github.com/rogerluan/app-store-connect-notifier/releases">
+    <img alt="Latest Release" src="https://img.shields.io/github/v/release/rogerluan/app-store-connect-notifier?sort=semver">
+  </a>
   <a href="https://github.com/rogerluan/app-store-connect-notifier/actions?query=workflow%3A%22Build%20%26%20Lint%22">
     <img alt="Build Status" src="https://github.com/rogerluan/app-store-connect-notifier/workflows/Build%20%26%20Lint/badge.svg">
   </a>
