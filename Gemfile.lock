@@ -4,6 +4,7 @@ GEM
     CFPropertyList (3.0.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    ast (2.4.1)
     atomos (0.1.3)
     aws-eventstream (1.1.0)
     aws-partitions (1.365.0)
@@ -124,15 +125,33 @@ GEM
     nanaimo (0.3.0)
     naturally (2.2.0)
     os (1.1.1)
+    parallel (1.19.2)
+    parser (2.7.1.4)
+      ast (~> 2.4.1)
     plist (3.5.0)
     public_suffix (4.0.6)
+    rainbow (3.0.0)
     rake (13.0.1)
+    regexp_parser (1.7.1)
     representable (3.0.4)
       declarative (< 0.1.0)
       declarative-option (< 0.2.0)
       uber (< 0.2.0)
     retriable (3.1.2)
+    rexml (3.2.4)
     rouge (2.0.7)
+    rubocop (0.90.0)
+      parallel (~> 1.10)
+      parser (>= 2.7.1.1)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.7)
+      rexml
+      rubocop-ast (>= 0.3.0, < 1.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 2.0)
+    rubocop-ast (0.4.0)
+      parser (>= 2.7.1.4)
+    ruby-progressbar (1.10.1)
     rubyzip (2.3.0)
     security (0.1.3)
     signet (0.14.0)
@@ -173,6 +192,7 @@ PLATFORMS
 
 DEPENDENCIES
   fastlane
+  rubocop
 
 RUBY VERSION
    ruby 2.6.5p114

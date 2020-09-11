@@ -2,6 +2,9 @@
   <img width=100 src="docs/assets/app-icon.png">
   <h1>App Store Connect Notifier</h1>
   <p><strong>Get those App Store Connect notifications delivered directly to Slack.</strong></p>
+  <a href="https://github.com/rogerluan/app-store-connect-notifier/actions?query=workflow%3A%22Build%20%26%20Lint%22">
+    <img alt="Build Status" src="https://github.com/rogerluan/app-store-connect-notifier/workflows/Build%20%26%20Lint/badge.svg">
+  </a>
   <a href="https://github.com/rogerluan/app-store-connect-notifier/issues">
     <img alt="Issues" src="https://img.shields.io/github/issues/rogerluan/app-store-connect-notifier?color=#86D492" />
   </a>
@@ -90,7 +93,7 @@ forever start src/poll-itc.js
 
 # Project Structure
 
-### fetch-app-status.rb
+### fetch_app_status.rb
 Ruby script that uses [Spaceship](https://github.com/fastlane/fastlane/tree/master/spaceship) to connect to App Store Connect. It then stdouts a JSON blob with your app info.
 
 ### poll-itc.js
