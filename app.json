@@ -12,7 +12,14 @@
   "repository": "https://github.com/rogerluan/app-store-connect-notifier",
   "logo": "https://raw.githubusercontent.com/rogerluan/app-store-connect-notifier/master/docs/assets/app-icon.png",
   "success_url": "https://github.com/rogerluan/app-store-connect-notifier",
-  "image": "heroku/nodejs",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/ruby"
+    }
+  ],
   "env": {
     "ITC_USERNAME": {
       "description": "Your App Store Connect username",
