@@ -20,6 +20,12 @@
       "url": "heroku/ruby"
     }
   ],
+  "formation": {
+    "clock": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
   "env": {
     "ITC_USERNAME": {
       "description": "Your App Store Connect username",
