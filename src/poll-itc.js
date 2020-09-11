@@ -8,7 +8,7 @@ function checkAppStatus() {
     console.log("Fetching latest app status...")
     // Invoke ruby script to grab latest app status
     const exec = require("child_process").exec
-    exec("ruby src/fetch-app-status.rb", function(err, stdout, stderr) {
+    exec("ruby src/fetch_app_status.rb", function(err, stdout, stderr) {
         if (stdout) {
             console.log(stdout)
             // Compare new app info with last one (from database)
@@ -32,9 +32,8 @@ function checkAppStatus() {
     })
 }
 
-function _checkAppStatus(version) {
+function _checkAppStatus(currentAppInfo) {
     // Use the live version if edit version is unavailable
-    const currentAppInfo = version["app_version"]
     const appInfoKey = "appInfo-" + currentAppInfo.appId
     const submissionStartkey = "submissionStart" + currentAppInfo.appId
     const lastAppInfo = db.get(appInfoKey)
