@@ -10,6 +10,9 @@ jobs:
       - uses: actions/setup-node@v2.1.1
         with:
           node-version: "14.x"
+      - uses: actions/setup-ruby
+        with:
+          ruby-version: "2.7"
       - run: bundle install
       - run: npm install
       - run: npm run lint
