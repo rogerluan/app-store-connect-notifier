@@ -47,7 +47,7 @@
     "POLL_TIME_IN_SECONDS": {
       "description": "How often the script should check for updates (in seconds).",
       "required": true,
-      "value": 120
+      "value": "120"
     }
   }
 }
