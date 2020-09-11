@@ -35,10 +35,6 @@ App Store Connect Notifier is a node.js app fetches your app info directly from 
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-After installation succeeds, navigate to the **Resources** tab of your heroku app (the URL looks something like: `https://dashboard.heroku.com/apps/<name-of-your-app>/resources`), and turn on your Dyno:
-
-![](docs/assets/heroku-config.png)
-
 ### Method 2: Hosting Manually
 
 #### Environment Variables
