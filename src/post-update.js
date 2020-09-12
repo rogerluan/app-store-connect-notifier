@@ -41,10 +41,10 @@ function slackAttachment(appInfo, submissionStartDate) {
     const attachment = {
         "fallback": `The status of your app ${appInfo.name} has been changed to ${appInfo.status}`,
         "color": colorForStatus(appInfo.status),
-        "title": "iTunes Connect",
+        "title": "App Store Connect",
         "author_name": appInfo.name,
         "author_icon": appInfo.iconUrl,
-        "title_link": `https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/${appInfo.appId}`,
+        "title_link": `https://appstoreconnect.apple.com/apps/${appInfo.appId}/appstore`,
         "fields": [
             {
                 "title": "Version",
@@ -57,7 +57,7 @@ function slackAttachment(appInfo, submissionStartDate) {
                 "short": true
             }
         ],
-        "footer": "iTunes Connect",
+        "footer": "App Store Connect",
         "footer_icon": "https://devimages.apple.com.edgekey.net/app-store/marketing/guidelines/images/app-store-icon.png",
         "ts": new Date().getTime() / 1000
     }
