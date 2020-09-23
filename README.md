@@ -45,7 +45,7 @@ App Store Connect Notifier is a node.js app fetches your app info directly from 
 Be sure to set these to the appropriate values:
 
 ```bash
-# Your App Store Connect username. Required
+# Your App Store Connect username. Required.
 export ITC_USERNAME="username@example.email"
 
 # Your App Store Connect password. Required if you're in a non-interactive environment. In interactive environments, it will ask for the password when executing and save it in Keychain.
@@ -53,6 +53,9 @@ export ITC_PASSWORD="your-app-store-connect-account-password"
 
 # Optional: If you're in multiple teams, enter the IDs of your App Store Connect team here (comma separated).
 export ITC_TEAM_IDS=132123123,456456456
+
+# The bundle identifier of the app you want these scripts to monitor the status. Required.
+export BUNDLE_IDENTIFIER="com.apple.swift"
 
 # Specify the channel you'd like the bot to post App Store Connect status updates. Don't forget to add the bot to this channel in Slack so it can post there. Required.
 export SLACK_CHANNEL_NAME="#ios-app-updates"
