@@ -66,11 +66,15 @@ function slackAttachment(appInfo, submissionStartDate) {
     // Set elapsed time since "Waiting For Review" start
     if (submissionStartDate && appInfo.status != "PREPARE_FOR_SUBMISSION" && appInfo.status != "WAITING_FOR_REVIEW") {
         const elapsedHours = moment().diff(moment(submissionStartDate), "hours")
-        attachment["fields"].push({
-            "title": "Elapsed Time",
-            "value": `${elapsedHours} hours`,
-            "short": true
-        })
+        // FIXME: Commented out for now until we find a reliable way to implement "Elapsed Time".
+        //        Right now, if the bot reboots in-between status checks in Heroku, the "waiting for review"
+        //        start time will be lost, thus making the "Elapsed Time" shorter than it actually was.
+        console.log(`Here's where we'd add 'Elapsed Time' (${elapsedHours} hours) to the attachment, but this feature has been temporarily disabled.`)
+        // attachment["fields"].push({
+        //     "title": "Elapsed Time",
+        //     "value": `${elapsedHours} hours`,
+        //     "short": true
+        // })
     }
     return attachment
 }
