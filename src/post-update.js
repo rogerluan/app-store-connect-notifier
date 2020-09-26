@@ -82,21 +82,21 @@ function colorForStatus(status) {
     const successColor2 = "#14ba40"
     const failureColor = "#e0143d"
     const colorMapping = {
-        "Prepare for Submission" : infoColor,
-        "Waiting For Review" : infoColor,
-        "In Review" : successColor1,
-        "Pending Contract" : warningColor,
-        "Waiting For Export Compliance" : warningColor,
-        "Pending Developer Release" : successColor2,
-        "Processing for App Store" : successColor2,
-        "Pending Apple Release" : successColor2,
-        "Ready for Sale" : successColor2,
-        "Rejected" : failureColor,
-        "Metadata Rejected" : failureColor,
-        "Removed From Sale" : failureColor,
-        "Developer Rejected" : failureColor,
-        "Developer Removed From Sale" : failureColor,
-        "Invalid Binary" : failureColor
+        "PREPARE_FOR_SUBMISSION" : infoColor,
+        "WAITING_FOR_REVIEW" : successColor1,
+        "IN_REVIEW" : successColor1,
+        "PENDING_CONTRACT" : warningColor,
+        "WAITING_FOR_EXPORT_COMPLIANCE" : warningColor,
+        "PENDING_DEVELOPER_RELEASE" : successColor2,
+        "PROCESSING_FOR_APP_STORE" : successColor2,
+        "PENDING_APPLE_RELEASE" : successColor2,
+        "READY_FOR_SALE" : successColor2,
+        "REJECTED" : failureColor,
+        "METADATA_REJECTED" : failureColor,
+        "REMOVED_FROM_SALE" : failureColor,
+        "DEVELOPER_REJECTED" : failureColor,
+        "DEVELOPER_REMOVED_FROM_SALE" : failureColor,
+        "INVALID_BINARY" : failureColor
     }
     return colorMapping[status]
 }
