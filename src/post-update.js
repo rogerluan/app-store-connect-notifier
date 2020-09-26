@@ -1,9 +1,10 @@
 const moment = require("moment")
+require("./string-utilities.js")
 
 function postToSlack(appInfo, submissionStartDate) {
     const WebClient = require("@slack/client").WebClient
     const client = new WebClient(process.env.BOT_API_TOKEN)
-    const message = `The status of your app *${appInfo.name}* has been changed to *${appInfo.status}*`
+    const message = `The status of your app *${appInfo.name}* has been changed to *${appInfo.status.formatted()}*`
     const attachment = slackAttachment(appInfo, submissionStartDate)
     const params = {
         "attachments" : [attachment],
@@ -39,7 +40,7 @@ function postMessageToSlack(message) {
 
 function slackAttachment(appInfo, submissionStartDate) {
     const attachment = {
-        "fallback": `The status of your app ${appInfo.name} has been changed to ${appInfo.status}`,
+        "fallback": `The status of your app ${appInfo.name} has been changed to ${appInfo.status.formatted()}`,
         "color": colorForStatus(appInfo.status),
         "title": "App Store Connect",
         "author_name": appInfo.name,
@@ -53,7 +54,7 @@ function slackAttachment(appInfo, submissionStartDate) {
             },
             {
                 "title": "Status",
-                "value": appInfo.status,
+                "value": appInfo.status.formatted(),
                 "short": true
             }
         ],
@@ -63,7 +64,7 @@ function slackAttachment(appInfo, submissionStartDate) {
     }
 
     // Set elapsed time since "Waiting For Review" start
-    if (submissionStartDate && appInfo.status != "Prepare for Submission" && appInfo.status != "Waiting For Review") {
+    if (submissionStartDate && appInfo.status != "PREPARE_FOR_SUBMISSION" && appInfo.status != "WAITING_FOR_REVIEW") {
         const elapsedHours = moment().diff(moment(submissionStartDate), "hours")
         attachment["fields"].push({
             "title": "Elapsed Time",

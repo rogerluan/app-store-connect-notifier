@@ -12,7 +12,7 @@ def get_version_info(app)
   {
     "name" => app.name,
     "version" => latest_version_info.version_string,
-    "status" => latest_version_info.app_store_state.gsub("_", " ").capitalize, # Replace with Spaceship map to copy when available
+    "status" => latest_version_info.app_store_state,
     "appId" => app.id,
     "iconUrl" => icon_url,
   }
