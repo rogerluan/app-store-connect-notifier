@@ -1,9 +1,10 @@
 const moment = require("moment")
+require("./string-utilities.js")
 
 function postToSlack(appInfo, submissionStartDate) {
     const WebClient = require("@slack/client").WebClient
     const client = new WebClient(process.env.BOT_API_TOKEN)
-    const message = `The status of your app *${appInfo.name}* has been changed to *${appInfo.status}*`
+    const message = `The status of your app *${appInfo.name}* has been changed to *${appInfo.status.formatted()}*`
     const attachment = slackAttachment(appInfo, submissionStartDate)
     const params = {
         "attachments" : [attachment],
@@ -39,7 +40,7 @@ function postMessageToSlack(message) {
 
 function slackAttachment(appInfo, submissionStartDate) {
     const attachment = {
-        "fallback": `The status of your app ${appInfo.name} has been changed to ${appInfo.status}`,
+        "fallback": `The status of your app ${appInfo.name} has been changed to ${appInfo.status.formatted()}`,
         "color": colorForStatus(appInfo.status),
         "title": "App Store Connect",
         "author_name": appInfo.name,
@@ -53,7 +54,7 @@ function slackAttachment(appInfo, submissionStartDate) {
             },
             {
                 "title": "Status",
-                "value": appInfo.status,
+                "value": appInfo.status.formatted(),
                 "short": true
             }
         ],
@@ -63,13 +64,17 @@ function slackAttachment(appInfo, submissionStartDate) {
     }
 
     // Set elapsed time since "Waiting For Review" start
-    if (submissionStartDate && appInfo.status != "Prepare for Submission" && appInfo.status != "Waiting For Review") {
+    if (submissionStartDate && appInfo.status != "PREPARE_FOR_SUBMISSION" && appInfo.status != "WAITING_FOR_REVIEW") {
         const elapsedHours = moment().diff(moment(submissionStartDate), "hours")
-        attachment["fields"].push({
-            "title": "Elapsed Time",
-            "value": `${elapsedHours} hours`,
-            "short": true
-        })
+        // FIXME: Commented out for now until we find a reliable way to implement "Elapsed Time".
+        //        Right now, if the bot reboots in-between status checks in Heroku, the "waiting for review"
+        //        start time will be lost, thus making the "Elapsed Time" shorter than it actually was.
+        console.log(`Here's where we'd add 'Elapsed Time' (${elapsedHours} hours) to the attachment, but this feature has been temporarily disabled.`)
+        // attachment["fields"].push({
+        //     "title": "Elapsed Time",
+        //     "value": `${elapsedHours} hours`,
+        //     "short": true
+        // })
     }
     return attachment
 }
@@ -81,21 +86,21 @@ function colorForStatus(status) {
     const successColor2 = "#14ba40"
     const failureColor = "#e0143d"
     const colorMapping = {
-        "Prepare for Submission" : infoColor,
-        "Waiting For Review" : infoColor,
-        "In Review" : successColor1,
-        "Pending Contract" : warningColor,
-        "Waiting For Export Compliance" : warningColor,
-        "Pending Developer Release" : successColor2,
-        "Processing for App Store" : successColor2,
-        "Pending Apple Release" : successColor2,
-        "Ready for Sale" : successColor2,
-        "Rejected" : failureColor,
-        "Metadata Rejected" : failureColor,
-        "Removed From Sale" : failureColor,
-        "Developer Rejected" : failureColor,
-        "Developer Removed From Sale" : failureColor,
-        "Invalid Binary" : failureColor
+        "PREPARE_FOR_SUBMISSION" : infoColor,
+        "WAITING_FOR_REVIEW" : successColor1,
+        "IN_REVIEW" : successColor1,
+        "PENDING_CONTRACT" : warningColor,
+        "WAITING_FOR_EXPORT_COMPLIANCE" : warningColor,
+        "PENDING_DEVELOPER_RELEASE" : successColor2,
+        "PROCESSING_FOR_APP_STORE" : successColor2,
+        "PENDING_APPLE_RELEASE" : successColor2,
+        "READY_FOR_SALE" : successColor2,
+        "REJECTED" : failureColor,
+        "METADATA_REJECTED" : failureColor,
+        "REMOVED_FROM_SALE" : failureColor,
+        "DEVELOPER_REJECTED" : failureColor,
+        "DEVELOPER_REMOVED_FROM_SALE" : failureColor,
+        "INVALID_BINARY" : failureColor
     }
     return colorMapping[status]
 }

@@ -1,0 +1,32 @@
+# Configuration for probot-auto-merge - https://github.com/bobvanderlinden/probot-auto-merge
+
+minApprovals:
+  CONTRIBUTOR: 0
+
+maxRequestedChanges:
+  CONTRIBUTOR: 0
+
+requiredReviewers:
+- rogerluan
+
+updateBranch: true
+
+reportStatus: true
+
+mergeMethod: merge
+
+mergeCommitMessage: |
+  #{number} {title}
+
+requiredLabels:
+- approved
+
+blockingLabels:
+- regex: ^blocked
+- regex: changes
+- regex: \bwip\b
+- regex: \bpending\b
+
+blockingTitleRegex: '\bwip\b'
+
+blockingBodyRegex: '\bdo not merge\b'
