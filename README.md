@@ -108,6 +108,12 @@ Node script to invoke the ruby script at certain intervals. It uses a key/value 
 ### post-update.js
 Node script that uses Slack's node.js SDK to send a message as a bot. It also calculates the number of hours since submission.
 
+# Troubleshooting
+
+#### Why does my app hosted on Heroku reboots all the time?
+
+Heroku does something called _Dyno cycling_ [at least once a day](https://devcenter.heroku.com/articles/dynos#automatic-dyno-restarts), and you can't prevent that from happening, unfortunately. Rebooting is fine, actually, except that you will lose all your database of app statuses that you collected since the last reboot. This means that we can't add nice features such as tracking the delta time between status changes (reliably) without persisting the information using an external service.
+
 # Vision
 
 The long-term goal of this project is to retire itself once App Store Connect finally starts supporting webhooks.
