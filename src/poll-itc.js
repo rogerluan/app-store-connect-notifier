@@ -1,3 +1,4 @@
+require("./string-utilities.js")
 const poster = require("./post-update.js")
 const dirty = require("dirty")
 const db = dirty("kvstore.db")
@@ -44,7 +45,7 @@ function _checkAppStatus(currentAppInfo) {
             poster.slack(currentAppInfo, db.get(submissionStartkey))
         }
         // Store submission start time
-        if (currentAppInfo.status == "Waiting For Review") {
+        if (currentAppInfo.status == "WAITING_FOR_REVIEW") {
             db.set(submissionStartkey, new Date())
         }
     } else if (currentAppInfo) {
