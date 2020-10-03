@@ -18,9 +18,6 @@ mergeMethod: merge
 mergeCommitMessage: |
   #{number} {title}
 
-requiredLabels:
-- approved
-
 blockingLabels:
 - regex: ^blocked
 - regex: changes
