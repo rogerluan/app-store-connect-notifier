@@ -34,6 +34,11 @@ App Store Connect Notifier is a node.js app fetches your app info directly from 
 
 # Set Up
 
+## Prerequisites
+
+You will need a Slack Bot to post updates on your behalf to your Slack workspace.
+If you still don't have one, check out this article on [how to create a bot for your workspace](https://slack.com/intl/en-br/help/articles/115005265703-Create-a-bot-for-your-workspace).
+
 ### Method 1: Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
