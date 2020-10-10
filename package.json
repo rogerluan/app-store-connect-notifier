@@ -22,7 +22,7 @@
   "dependencies": {
     "@slack/client": "3.16.0",
     "dirty": "^1.1.0",
-    "moment": "^2.29.0"
+    "moment": "^2.29.1"
   },
   "devDependencies": {
     "eslint": "^7.10.0"
