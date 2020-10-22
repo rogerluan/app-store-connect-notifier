@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/rogerluan/app-store-connect-notifier#readme",
   "dependencies": {
-    "@slack/client": "3.16.0",
+    "@slack/client": "5.0.2",
     "dirty": "^1.1.0",
     "moment": "^2.29.1"
   },
