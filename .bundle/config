@@ -1,0 +1,4 @@
+---
+BUNDLE_PATH: ".vendor"
+BUNDLE_JOBS: "8"
+BUNDLE_WITHOUT: "system_tests"

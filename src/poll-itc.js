@@ -13,7 +13,7 @@ function checkAppStatus() {
         if (stdout) {
             console.log(stdout)
             // Compare new app info with last one (from database)
-            if (stdout.includes("did not find username")) {
+            if (stdout.includes("Couldn't find valid authentication token or credentials.")) {
                 console.log("Did you forget to set the correct Environment Variables?")
                 console.log("Exiting.")
                 process.exit(1)
