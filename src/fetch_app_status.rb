@@ -79,10 +79,7 @@ def get_app_version_from(bundle_id)
 end
 
 if uses_app_store_connect_auth_token
-  # FIXME: This is a temporary setup. See https://github.com/fastlane/fastlane/pull/17369 for more info.
-  Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(key_id: spaceship_connect_api_key_id, issuer_id: spaceship_connect_api_issuer_id, key: spaceship_connect_api_key)
-  # Should be replaced with this once the PR above is merged:
-  # Spaceship::ConnectAPI.auth(key_id: spaceship_connect_api_key_id, issuer_id: spaceship_connect_api_issuer_id, key: spaceship_connect_api_key)
+  Spaceship::ConnectAPI.auth(key_id: spaceship_connect_api_key_id, issuer_id: spaceship_connect_api_issuer_id, key: spaceship_connect_api_key)
 else
   Spaceship::ConnectAPI.login(itc_username, itc_password)
 end
