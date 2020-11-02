@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # Needed to load gems from Gemfile
-require 'rubygems'
-require 'bundler/setup'
+require "rubygems"
+require "bundler/setup"
 
 require "spaceship"
 require "json"
