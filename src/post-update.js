@@ -4,7 +4,7 @@ require("./string-utilities.js")
 function postToSlack(appInfo, submissionStartDate) {
     const message = `The status of your app *${appInfo.name}* has been changed to *${appInfo.status.formatted()}*`
     const attachment = slackAttachment(appInfo, submissionStartDate)
-    const channel = process.env.SLACK_CHANNEL_NAME ?? "#ios-app-updates"
+    const channel = process.env.SLACK_CHANNEL_NAME || "#ios-app-updates"
     post(message, channel, [attachment])
 }
 
