@@ -2,40 +2,35 @@ const moment = require("moment")
 require("./string-utilities.js")
 
 function postToSlack(appInfo, submissionStartDate) {
-    const WebClient = require("@slack/client").WebClient
-    const client = new WebClient(process.env.BOT_API_TOKEN)
     const message = `The status of your app *${appInfo.name}* has been changed to *${appInfo.status.formatted()}*`
     const attachment = slackAttachment(appInfo, submissionStartDate)
-    const params = {
-        "attachments" : [attachment],
-        "as_user" : "true"
-    }
-    var channel = process.env.SLACK_CHANNEL_NAME
-    if (!channel) {
-        channel = "#ios-app-updates"
-    }
-    client.chat.postMessage(channel, message, params, function(err,) {
-        if (err) {
-            console.log("Error:", err)
-        }
-    })
+    const channel = process.env.SLACK_CHANNEL_NAME ?? "#ios-app-updates"
+    post(message, channel, [attachment])
 }
 
 function postMessageToSlack(message) {
-    const WebClient = require("@slack/client").WebClient
-    const client = new WebClient(process.env.BOT_API_TOKEN)
-    const params = {
-        "as_user" : "true"
-    }
     const channel = process.env.BOT_STATUS_SLACK_CHANNEL_NAME
     if (!channel) {
         return
     }
-    client.chat.postMessage(channel, message, params, function(err,) {
-        if (err) {
-            console.log("Error:", err)
-        }
-    })
+    post(message, channel, null)
+}
+
+function post(message, channel, attachments) {
+    const { WebClient } = require("@slack/web-api")
+    const client = new WebClient(process.env.BOT_API_TOKEN)
+    const request = async() => {
+        // Post a message to the channel, and await the result.
+        // Find more arguments and details of the response: https://api.slack.com/methods/chat.postMessage
+        const result = await client.chat.postMessage({
+            text: message,
+            channel: channel,
+            attachments: attachments,
+            as_user: true,
+        })
+        console.log(`Successfully sent message ${result.ts} in conversation ${channel}`)
+    }
+    request()
 }
 
 function slackAttachment(appInfo, submissionStartDate) {
