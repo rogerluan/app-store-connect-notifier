@@ -25,6 +25,6 @@
     "moment": "^2.29.1"
   },
   "devDependencies": {
-    "eslint": "^7.12.1"
+    "eslint": "^7.13.0"
   }
 }
