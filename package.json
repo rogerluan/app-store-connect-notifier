@@ -21,7 +21,7 @@
   "homepage": "https://github.com/rogerluan/app-store-connect-notifier#readme",
   "dependencies": {
     "@slack/web-api": "5.14.0",
-    "dirty": "^1.1.0",
+    "dirty": "^1.1.1",
     "moment": "^2.29.1"
   },
   "devDependencies": {
