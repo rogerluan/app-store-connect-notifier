@@ -14,7 +14,7 @@ function postToSlack(appInfo, submissionStartDate) {
 }
 
 function postMessageToSlack(message) {
-    const webhook_url = process.env.BOT_SLACK_WEBHOOK_URL
+    const webhook_url = process.env.BOT_STATUS_SLACK_WEBHOOK_URL
     if (webhook_url) {
         postUsingWebhook(message, webhook_url, null)
     } else {
