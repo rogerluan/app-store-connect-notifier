@@ -64,7 +64,7 @@ function postUsingWebhook(message, webhook_url, attachments) {
  */
  function sendSlackMessage(webhookURL, messageBody) {
     const https = require('https');
-    // make sure the incoming message body can be parsed into valid JSON
+    // Make sure the incoming message body can be parsed into valid JSON
     try {
       messageBody = JSON.stringify(messageBody);
     } catch (e) {
@@ -73,7 +73,6 @@ function postUsingWebhook(message, webhook_url, attachments) {
   
     // Promisify the https.request
     return new Promise((resolve, reject) => {
-      // general request options, we defined that it's a POST request and content is JSON
       const requestOptions = {
         method: 'POST',
         header: {
@@ -81,27 +80,26 @@ function postUsingWebhook(message, webhook_url, attachments) {
         }
       };
   
-      // actual request
+      // Actual request
       const req = https.request(webhookURL, requestOptions, (res) => {
         let response = '';
-  
-  
+
         res.on('data', (d) => {
           response += d;
         });
-  
-        // response finished, resolve the promise with data
+
+        // Response finished, resolve the promise with data
         res.on('end', () => {
           resolve(response);
         })
       });
-  
-      // there was an error, reject the promise
+
+      // There was an error, reject the promise
       req.on('error', (e) => {
         reject(e);
       });
-  
-      // send our message body (was parsed to JSON beforehand)
+
+      // Send the message body that we already parsed to JSON
       req.write(messageBody);
       req.end();
     });
