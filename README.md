@@ -71,6 +71,9 @@ export BOT_STATUS_SLACK_CHANNEL_NAME="#ios-bot-status-updates"
 # The API token for your bot, provided by Slack. Required.
 export BOT_API_TOKEN="xoxb-123123123123-ASDASDASDASD-FGHFGHFGHFGH"
 
+# The webhook url provided by slack for your channel. When using this the channel and api tokens are not needed
+export BOT_SLACK_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XxxxXXXXXxxxxxxxxxxxx"
+
 # How often the script should check for updates (in seconds). Required.
 export POLL_TIME_IN_SECONDS=120
 ```

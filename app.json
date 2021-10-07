@@ -43,6 +43,10 @@
       "description": "The API token for your bot, provided by Slack.",
       "required": true
     },
+    "BOT_SLACK_WEBHOOK_URL": {
+      "description": "The webhook url provided by Slack.",
+      "required": false
+    },
     "ITC_TEAM_IDS": {
       "description": "Optional: If you're in multiple teams, enter the IDs of your App Store Connect team here (comma separated).",
       "required": false
