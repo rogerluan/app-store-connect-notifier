@@ -71,7 +71,10 @@ end
 def get_app_version_from(bundle_id)
   apps = []
   if bundle_id
-    apps.push(Spaceship::ConnectAPI::App.find(bundle_id))
+    bundle_ids = bundle_id.split(',')
+    bundle_ids.each { |id| 
+      apps.push(Spaceship::ConnectAPI::App.find(id))
+    }
   else
     apps = Spaceship::ConnectAPI::App.all
   end
