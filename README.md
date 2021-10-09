@@ -56,7 +56,7 @@ export ITC_USERNAME="username@example.email"
 # Your App Store Connect password. Required if you're in a non-interactive environment. In interactive environments, it will ask for the password when executing and save it in Keychain.
 export ITC_PASSWORD="your-app-store-connect-account-password"
 
-# The [App Store Connect API key](https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api). Use this when on a non-interactive environment and you have 2FA set up. When using this ITC_USERNAME is not used
+# The [App Store Connect API key](https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api). Use this when on a non-interactive environment and you have 2FA set up. When using this, ITC_USERNAME is not used.
 export SPACESHIP_CONNECT_API_KEY='-----BEGIN PRIVATE KEY-----
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -102,6 +102,10 @@ You can use _fastlane_'s [CredentialsManager](https://github.com/fastlane/fastla
 ```bash
 bundle exec fastlane fastlane-credentials add --username itc_username@example.com
 ```
+
+#### Using App Store Connect API
+
+For more information on how to use `SPACESHIP_CONNECT_API_KEY`, `SPACESHIP_CONNECT_API_ISSUER_ID` and `SPACESHIP_CONNECT_API_KEY_ID` to skip 2FA authentication, check out [Apple Documentation](https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api) and [Using App Store Connect API on fastlane](https://docs.fastlane.tools/app-store-connect-api).
 
 #### Running
 
