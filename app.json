@@ -35,9 +35,9 @@
       "description": "Your App Store Connect password",
       "required": true
     },
-    "BUNDLE_IDENTIFIER": {
-      "description": "The bundle identifier of the app you want these scripts to monitor the status.",
-      "required": true
+    "BUNDLE_IDENTIFIERS": {
+      "description": "Comma-separated list of bundle identifiers of the apps you want these scripts to monitor. If this is not set, it will monitor all apps of your team.",
+      "required": false
     },
     "BOT_API_TOKEN": {
       "description": "The API token for your bot, provided by Slack.",

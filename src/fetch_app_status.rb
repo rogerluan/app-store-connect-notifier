@@ -8,8 +8,8 @@ require "spaceship"
 require "json"
 
 # Constants
-def bundle_id
-  ENV["BUNDLE_IDENTIFIER"]
+def bundle_ids
+  ENV["BUNDLE_IDENTIFIERS"]
 end
 
 def itc_username
@@ -68,10 +68,12 @@ def get_version_info(app)
   }
 end
 
-def get_app_version_from(bundle_id)
+def get_app_version_from(bundle_ids)
   apps = []
-  if bundle_id
-    apps.push(Spaceship::ConnectAPI::App.find(bundle_id))
+  if bundle_ids
+    bundle_ids.split(',').each { |id| 
+      apps.push(Spaceship::ConnectAPI::App.find(id))
+    }
   else
     apps = Spaceship::ConnectAPI::App.all
   end
@@ -90,11 +92,11 @@ versions = []
 # Add for the team_ids
 # Test if itc_team doesnt exists
 if itc_team_id_array.length.zero?
-  versions += get_app_version_from(bundle_id)
+  versions += get_app_version_from(bundle_ids)
 else
   itc_team_id_array.each do |itc_team_id|
     Spaceship::ConnectAPI.select_team(tunes_team_id: itc_team_id) if itc_team_id
-    versions += get_app_version_from(bundle_id)
+    versions += get_app_version_from(bundle_ids)
   end
 end
 
