@@ -59,7 +59,7 @@ export ITC_PASSWORD="your-app-store-connect-account-password"
 # Optional: If you're in multiple teams, enter the IDs of your App Store Connect team here (comma separated).
 export ITC_TEAM_IDS=132123123,456456456
 
-# Comma separated list of bundle identifiers of the apps you want these scripts to monitor. If this is not set it will monitor all apps for your team. Required
+# Comma-separated list of bundle identifiers of the apps you want these scripts to monitor. If this is not set, it will monitor all apps of your team.
 export BUNDLE_IDENTIFIERS="com.apple.swift"
 
 # Specify the channel you'd like the bot to post App Store Connect status updates. Don't forget to add the bot to this channel in Slack so it can post there. Required.
