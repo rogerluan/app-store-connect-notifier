@@ -29,11 +29,23 @@
   "env": {
     "ITC_USERNAME": {
       "description": "Your App Store Connect username",
-      "required": true
+      "required": false
     },
     "ITC_PASSWORD": {
       "description": "Your App Store Connect password",
-      "required": true
+      "required": false
+    },
+    "SPACESHIP_CONNECT_API_KEY": {
+      "description": "The App Store Connect API key. Use this when on a non-interactive environment and you have 2FA set up. When using this ITC_USERNAME is not used",
+      "required": false
+    },
+    "SPACESHIP_CONNECT_API_ISSUER_ID": {
+      "description": "The App Store Connect API Issuer ID. Required when SPACESHIP_CONNECT_API_KEY is used",
+      "required": false
+    },
+    "SPACESHIP_CONNECT_API_KEY_ID": {
+      "description": "The App Store Connect API Key ID. Required when SPACESHIP_CONNECT_API_KEY is used",
+      "required": false
     },
     "BUNDLE_IDENTIFIERS": {
       "description": "Comma-separated list of bundle identifiers of the apps you want these scripts to monitor. If this is not set, it will monitor all apps of your team.",
