@@ -48,7 +48,7 @@
       "required": false
     },
     "BOT_STATUS_SLACK_WEBHOOK_URL": {
-      "description": "Optional: Specify the webhook url for the channel you'd like the bot to post its uptime updates. When using this, BOT_STATUS_SLACK_CHANNEL_NAME is not used.",
+      "description": "Optional: Specify the incoming webhook URL for the channel you'd like the bot to post its uptime updates. When using this, BOT_STATUS_SLACK_CHANNEL_NAME is not used.",
       "required": false
     },
     "ITC_TEAM_IDS": {
