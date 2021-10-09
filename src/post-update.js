@@ -51,59 +51,59 @@ function postUsingWebhook(message, webhook_url, attachments) {
     if (attachments) {
         body["attachments"] = attachments
     }
-    
+
     sendSlackMessage(webhook_url, body)
 }
 
 /**
- * Handles the actual sending request. 
+ * Handles the actual sending request.
  * We're turning the https.request into a promise here for convenience
  * @param webhookURL
  * @param messageBody
  * @return {Promise}
  */
- function sendSlackMessage(webhookURL, messageBody) {
-    const https = require('https');
+function sendSlackMessage(webhookURL, messageBody) {
+    const https = require("https")
     // Make sure the incoming message body can be parsed into valid JSON
     try {
-      messageBody = JSON.stringify(messageBody);
+        messageBody = JSON.stringify(messageBody)
     } catch (e) {
-      throw new Error('Failed to stringify messageBody', e);
+        throw new Error("Failed to stringify messageBody", e)
     }
-  
+
     // Promisify the https.request
     return new Promise((resolve, reject) => {
-      const requestOptions = {
-        method: 'POST',
-        header: {
-          'Content-Type': 'application/json'
+        const requestOptions = {
+            method: "POST",
+            header: {
+                "Content-Type": "application/json"
+            }
         }
-      };
-  
-      // Actual request
-      const req = https.request(webhookURL, requestOptions, (res) => {
-        let response = '';
 
-        res.on('data', (d) => {
-          response += d;
-        });
+        // Actual request
+        const req = https.request(webhookURL, requestOptions, (res) => {
+            let response = ""
 
-        // Response finished, resolve the promise with data
-        res.on('end', () => {
-          resolve(response);
+            res.on("data", (d) => {
+                response += d
+            })
+
+            // Response finished, resolve the promise with data
+            res.on("end", () => {
+                resolve(response)
+            })
         })
-      });
 
-      // There was an error, reject the promise
-      req.on('error', (e) => {
-        reject(e);
-      });
+        // There was an error, reject the promise
+        req.on("error", (e) => {
+            reject(e)
+        })
 
-      // Send the message body that we already parsed to JSON
-      req.write(messageBody);
-      req.end();
-    });
-  }
+        // Send the message body that we already parsed to JSON
+        req.write(messageBody)
+        req.end()
+    })
+}
 
 function slackAttachment(appInfo, submissionStartDate) {
     const attachment = {
