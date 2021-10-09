@@ -62,14 +62,20 @@ export ITC_TEAM_IDS=132123123,456456456
 # Comma-separated list of bundle identifiers of the apps you want these scripts to monitor. If this is not set, it will monitor all apps of your team.
 export BUNDLE_IDENTIFIERS="com.apple.swift"
 
-# Specify the channel you'd like the bot to post App Store Connect status updates. Don't forget to add the bot to this channel in Slack so it can post there. Required.
+# Specify the channel you'd like the bot to post App Store Connect status updates. Don't forget to add the bot to this channel in Slack so it can post there. Required when BOT_SLACK_WEBHOOK_URL is not set.
 export SLACK_CHANNEL_NAME="#ios-app-updates"
 
-# Optional: Specify the channel you'd like the bot to post its uptime updates. Don't forget to add the bot to this channel in Slack so it can post there. If not provided, it won't post status updates.
+# Optional: Specify the channel you'd like the bot to post its uptime updates. Don't forget to add the bot to this channel in Slack so it can post there. If not provided, it won't post status updates. Not used when BOT_STATUS_SLACK_WEBHOOK_URL is set
 export BOT_STATUS_SLACK_CHANNEL_NAME="#ios-bot-status-updates"
 
-# The API token for your bot, provided by Slack. Required.
+# The API token for your bot, provided by Slack. Required when BOT_SLACK_WEBHOOK_URL is not set.
 export BOT_API_TOKEN="xoxb-123123123123-ASDASDASDASD-FGHFGHFGHFGH"
+
+# The incoming webhook URL provided by Slack for your channel. When using this, SLACK_CHANNEL_NAME and BOT_API_TOKEN are not used.
+export BOT_SLACK_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XxxxXXXXXxxxxxxxxxxxx"
+
+# Optional: Specify the incoming webhook URL for the channel you'd like the bot to post its uptime updates. When using this, BOT_STATUS_SLACK_CHANNEL_NAME is not used.
+export BOT_STATUS_SLACK_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XxxxXXXXXxxxxxxxxxxxx"
 
 # How often the script should check for updates (in seconds). Required.
 export POLL_TIME_IN_SECONDS=120

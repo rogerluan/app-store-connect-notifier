@@ -40,20 +40,28 @@
       "required": false
     },
     "BOT_API_TOKEN": {
-      "description": "The API token for your bot, provided by Slack.",
-      "required": true
+      "description": "The API token for your bot, provided by Slack. Required when BOT_SLACK_WEBHOOK_URL is not set.",
+      "required": false
+    },
+    "BOT_SLACK_WEBHOOK_URL": {
+      "description": "The incoming webhook URL provided by Slack for your channel. When using this, SLACK_CHANNEL_NAME and BOT_API_TOKEN are not used.",
+      "required": false
+    },
+    "BOT_STATUS_SLACK_WEBHOOK_URL": {
+      "description": "Optional: Specify the incoming webhook URL for the channel you'd like the bot to post its uptime updates. When using this, BOT_STATUS_SLACK_CHANNEL_NAME is not used.",
+      "required": false
     },
     "ITC_TEAM_IDS": {
       "description": "Optional: If you're in multiple teams, enter the IDs of your App Store Connect team here (comma separated).",
       "required": false
     },
     "SLACK_CHANNEL_NAME": {
-      "description": "Specify the channel you'd like the bot to post App Store Connect status updates. Don't forget to add the bot to this channel in Slack so it can post there.",
-      "required": true,
+      "description": "Specify the channel you'd like the bot to post App Store Connect status updates. Don't forget to add the bot to this channel in Slack so it can post there. Required when BOT_SLACK_WEBHOOK_URL is not set.",
+      "required": false,
       "value": "#ios-app-updates"
     },
     "BOT_STATUS_SLACK_CHANNEL_NAME": {
-      "description": "Optional: Specify the channel you'd like the bot to post its uptime updates. Don't forget to add the bot to this channel in Slack so it can post there. If not provided, it won't post status updates.",
+      "description": "Optional: Specify the channel you'd like the bot to post its uptime updates. Don't forget to add the bot to this channel in Slack so it can post there. If not provided, it won't post status updates. Not used when BOT_STATUS_SLACK_WEBHOOK_URL is set",
       "required": false,
       "value": "#ios-bot-status-updates"
     },
