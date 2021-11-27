@@ -26,7 +26,7 @@
 
 # Intro
 
-App Store Connect Notifier is a node.js app fetches your app info directly from App Store Connect and posts changes in Slack as a bot. Since App Store Connect doesn't provide event webhooks (yet), these scripts use polling with the help of _fastlane_'s [Spaceship](https://github.com/fastlane/fastlane/tree/master/spaceship).
+App Store Connect Notifier is a node.js app fetches your app and build info directly from App Store Connect and posts changes in Slack as a bot. Since App Store Connect doesn't provide event webhooks (yet), these scripts use polling with the help of _fastlane_'s [Spaceship](https://github.com/fastlane/fastlane/tree/master/spaceship).
 
 # Preview
 
@@ -92,6 +92,9 @@ export BOT_STATUS_SLACK_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXX/X
 
 # How often the script should check for updates (in seconds). Required.
 export POLL_TIME_IN_SECONDS=120
+
+# The number of builds to keep track often (default 5)
+export NUMBER_OF_BUILDS=5
 ```
 
 ### Method 3: Docker
