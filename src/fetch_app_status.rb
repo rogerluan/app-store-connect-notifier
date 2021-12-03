@@ -45,6 +45,10 @@ def itc_team_id_array
   ENV["ITC_TEAM_IDS"].to_s.split(",")
 end
 
+def number_of_builds
+  (ENV["NUMBER_OF_BUILDS"] || 5).to_i
+end
+
 unless uses_app_store_connect_auth_token || uses_app_store_connect_auth_credentials
   puts "Couldn't find valid authentication token or credentials."
   exit
@@ -68,6 +72,18 @@ def get_version_info(app)
   }
 end
 
+def get_build_info(app)
+  builds = app.get_builds.sort_by(&:uploaded_date).reverse[0, number_of_builds]
+
+  builds.map do |build|
+    {
+      version: build.version,
+      uploaded_data: build.uploaded_date,
+      status: build.processing_state,
+    }
+  end
+end
+
 def get_app_version_from(bundle_ids)
   apps = []
   if bundle_ids
@@ -77,7 +93,11 @@ def get_app_version_from(bundle_ids)
   else
     apps = Spaceship::ConnectAPI::App.all
   end
-  apps.map { |app| get_version_info(app) }
+  apps.map do |app|
+    info = get_version_info(app)
+    info["builds"] = get_build_info(app)
+    info
+  end
 end
 
 if uses_app_store_connect_auth_token

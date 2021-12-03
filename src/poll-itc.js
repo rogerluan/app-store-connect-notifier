@@ -36,13 +36,16 @@ function checkAppStatus() {
 function _checkAppStatus(currentAppInfo) {
     // Use the live version if edit version is unavailable
     const appInfoKey = "appInfo-" + currentAppInfo.appId
+    const buildInfoKey = "builds-appInfo-" + currentAppInfo.appId
     const submissionStartkey = "submissionStart" + currentAppInfo.appId
     const lastAppInfo = db.get(appInfoKey)
+    const lastBuildInfo = db.get(buildInfoKey) || {}
+
     if (!lastAppInfo || lastAppInfo.status != currentAppInfo.status || debug) {
         if (!lastAppInfo) {
             poster.slackMessage("App Store Connect Notifier Bot has just restarted.")
         } else {
-            poster.slack(currentAppInfo, db.get(submissionStartkey))
+            poster.slackApp(currentAppInfo, db.get(submissionStartkey))
         }
         // Store submission start time
         if (currentAppInfo.status == "WAITING_FOR_REVIEW") {
@@ -56,6 +59,28 @@ function _checkAppStatus(currentAppInfo) {
 
     // Store latest app info in database
     db.set(appInfoKey, currentAppInfo)
+
+    const buildChange = lastAppInfo && JSON.stringify(lastAppInfo.builds) != JSON.stringify(currentAppInfo.builds)
+    if (lastAppInfo && buildChange) {
+        const builds = currentAppInfo.builds
+        const newBuildInfo = {}
+
+        builds.forEach((buildInfo) => {
+            const oldBuildInfo = lastBuildInfo[buildInfo.version]
+            if (!oldBuildInfo) {
+                poster.slackBuild(currentAppInfo, buildInfo)
+                newBuildInfo[buildInfo.version] = buildInfo
+            } else if (oldBuildInfo.status != buildInfo.status) {
+                poster.slackBuild(currentAppInfo, buildInfo)
+                newBuildInfo[buildInfo.version] = buildInfo
+            } else {
+                console.log("No build change detected.")
+            }
+        })
+
+        // Store latest build info in database
+        db.set(buildInfoKey, newBuildInfo)
+    }
 }
 
 if (!pollIntervalSeconds) {

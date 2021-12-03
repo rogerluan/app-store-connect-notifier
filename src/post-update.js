@@ -1,9 +1,7 @@
 const moment = require("moment")
 require("./string-utilities.js")
 
-function postToSlack(appInfo, submissionStartDate) {
-    const message = `The status of your app *${appInfo.name}* has been changed to *${appInfo.status.formatted()}*`
-    const attachment = slackAttachment(appInfo, submissionStartDate)
+function postToSlack(message, attachment) {
     const webhook_url = process.env.BOT_SLACK_WEBHOOK_URL
     if (webhook_url) {
         postUsingWebhook(message, webhook_url, [attachment])
@@ -11,6 +9,18 @@ function postToSlack(appInfo, submissionStartDate) {
         const channel = process.env.SLACK_CHANNEL_NAME || "#ios-app-updates"
         post(message, channel, [attachment])
     }
+}
+
+function postToSlackApp(appInfo, submissionStartDate) {
+    const message = `The status of your app *${appInfo.name}* has been changed to *${appInfo.status.formatted()}*`
+    const attachment = slackAttachment(appInfo, submissionStartDate)
+    postToSlack(message, attachment)
+}
+
+function postToSlackBuild(appInfo, buildInfo) {
+    const message = `The status of build version *${buildInfo.version}* for your app *${appInfo.name}* has been changed to *${buildInfo.status}*`
+    const attachment = slackAttachmentBuild(message, appInfo, buildInfo)
+    postToSlack(message, attachment)
 }
 
 function postMessageToSlack(message) {
@@ -146,6 +156,44 @@ function slackAttachment(appInfo, submissionStartDate) {
     return attachment
 }
 
+function slackAttachmentBuild(fallback, appInfo, buildInfo) {
+    const attachment = {
+        fallback,
+        "color": colorForStatus(buildInfo.status),
+        "title": "App Store Connect",
+        "author_name": appInfo.name,
+        "author_icon": appInfo.iconUrl,
+        "title_link": `https://appstoreconnect.apple.com/apps/${appInfo.appId}/appstore`,
+        "fields": [
+            {
+                "title": "Build Version",
+                "value": buildInfo.version,
+                "short": true
+            },
+            {
+                "title": "Build Status",
+                "value": buildInfo.status,
+                "short": true
+            },
+            {
+                "title": "Version",
+                "value": appInfo.version,
+                "short": true
+            },
+            {
+                "title": "App Status",
+                "value": appInfo.status.formatted(),
+                "short": true
+            }
+        ],
+        "footer": "App Store Connect",
+        "footer_icon": "https://devimages.apple.com.edgekey.net/app-store/marketing/guidelines/images/app-store-icon.png",
+        "ts": new Date().getTime() / 1000
+    }
+
+    return attachment
+}
+
 function colorForStatus(status) {
     const infoColor = "#8e8e8e"
     const warningColor = "#f4f124"
@@ -153,6 +201,7 @@ function colorForStatus(status) {
     const successColor2 = "#14ba40"
     const failureColor = "#e0143d"
     const colorMapping = {
+        // App
         "PREPARE_FOR_SUBMISSION" : infoColor,
         "WAITING_FOR_REVIEW" : successColor1,
         "IN_REVIEW" : successColor1,
@@ -167,12 +216,19 @@ function colorForStatus(status) {
         "REMOVED_FROM_SALE" : failureColor,
         "DEVELOPER_REJECTED" : failureColor,
         "DEVELOPER_REMOVED_FROM_SALE" : failureColor,
-        "INVALID_BINARY" : failureColor
+        "INVALID_BINARY" : failureColor,
+
+        // Build
+        "PROCESSING" : infoColor,
+        "FAILED" : failureColor,
+        "INVALID" : failureColor,
+        "VALID" : successColor2,
     }
     return colorMapping[status]
 }
 
 module.exports = {
-    slack: postToSlack,
+    slackApp: postToSlackApp,
+    slackBuild: postToSlackBuild,
     slackMessage: postMessageToSlack
 }
