@@ -78,10 +78,9 @@ function _checkAppStatus(currentAppInfo) {
             }
         })
 
+        // Store latest build info in database
         db.set(buildInfoKey, newBuildInfo)
     }
-
-    // Store latest build info in database
 }
 
 if (!pollIntervalSeconds) {

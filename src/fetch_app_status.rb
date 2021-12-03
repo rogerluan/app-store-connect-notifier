@@ -77,9 +77,9 @@ def get_build_info(app)
 
   builds.map do |build|
     {
-      "version" => build.version,
-      "uploaded_data" => build.uploaded_date,
-      "status" => build.processing_state,
+      version: build.version,
+      uploaded_data: build.uploaded_date,
+      status: build.processing_state,
     }
   end
 end
