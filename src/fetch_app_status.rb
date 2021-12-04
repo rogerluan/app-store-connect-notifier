@@ -46,7 +46,7 @@ def itc_team_id_array
 end
 
 def number_of_builds
-  (ENV["NUMBER_OF_BUILDS"] || 5).to_i
+  (ENV["NUMBER_OF_BUILDS"] || 1).to_i
 end
 
 unless uses_app_store_connect_auth_token || uses_app_store_connect_auth_credentials
