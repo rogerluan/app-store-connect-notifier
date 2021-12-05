@@ -81,6 +81,11 @@
       "description": "How often the script should check for updates (in seconds).",
       "required": true,
       "value": "120"
+    },
+    "NUMBER_OF_BUILDS": {
+      "description": "How many builds do you want to track simultaneously? Defaults to 1 as you usually just want to track the latest build.",
+      "required": true,
+      "value": "1"
     }
   }
 }

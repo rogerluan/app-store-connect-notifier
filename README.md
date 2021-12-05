@@ -93,7 +93,7 @@ export BOT_STATUS_SLACK_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXX/X
 # How often the script should check for updates (in seconds). Required.
 export POLL_TIME_IN_SECONDS=120
 
-# The number of builds to keep track. Defaults to 1.
+# How many builds do you want to track simultaneously? Defaults to 1 as you usually just want to track the latest build.
 export NUMBER_OF_BUILDS=1
 ```
 
