@@ -30,7 +30,15 @@ App Store Connect Notifier is a node.js app fetches your app and build info dire
 
 # Preview
 
-![](docs/assets/preview.png)
+## App Status
+
+![](docs/assets/preview-app-status.png)
+
+## Build Status
+
+Be notified when your builds are ready to be submitted!
+
+![](docs/assets/preview-build-status.png)
 
 # Set Up
 
