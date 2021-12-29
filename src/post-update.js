@@ -1,4 +1,5 @@
 const moment = require("moment")
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 require("./string-utilities.js")
 
 function postToSlack(message, attachment) {
@@ -55,14 +56,20 @@ function post(message, channel, attachments) {
 
 function postUsingWebhook(message, webhook_url, attachments) {
     var body = {
-        "text": message
+        "text": message,
+        "channel": process.env.SLACK_CHANNEL_NAME || "#bitrise-jysan-ios",
+        "username": "App Store",
+        "icon_emoji": ":rocket:",
     }
 
     if (attachments) {
         body["attachments"] = attachments
     }
 
-    sendSlackMessage(webhook_url, body)
+    const messageRequest = sendSlackMessage(webhook_url, body)
+    messageRequest.catch((err) => {
+        console.log(err)
+    })
 }
 
 /**
@@ -135,8 +142,7 @@ function slackAttachment(appInfo, submissionStartDate) {
                 "short": true
             }
         ],
-        "footer": "App Store Connect",
-        "footer_icon": "https://devimages.apple.com.edgekey.net/app-store/marketing/guidelines/images/app-store-icon.png",
+        "footer": "Powered by STRONG",
         "ts": new Date().getTime() / 1000
     }
 
@@ -186,8 +192,7 @@ function slackAttachmentBuild(fallback, appInfo, buildInfo) {
                 "short": true
             }
         ],
-        "footer": "App Store Connect",
-        "footer_icon": "https://devimages.apple.com.edgekey.net/app-store/marketing/guidelines/images/app-store-icon.png",
+        "footer": "Powered by STRONG",
         "ts": new Date().getTime() / 1000
     }
 

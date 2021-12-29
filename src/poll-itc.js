@@ -1,4 +1,5 @@
 require("./string-utilities.js")
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 const poster = require("./post-update.js")
 const dirty = require("dirty")
 const db = dirty("kvstore.db")
@@ -42,9 +43,7 @@ function _checkAppStatus(currentAppInfo) {
     const lastBuildInfo = db.get(buildInfoKey) || {}
 
     if (!lastAppInfo || lastAppInfo.status != currentAppInfo.status || debug) {
-        if (!lastAppInfo) {
-            poster.slackMessage("App Store Connect Notifier Bot has just restarted.")
-        } else {
+        if (lastAppInfo) {
             poster.slackApp(currentAppInfo, db.get(submissionStartkey))
         }
         // Store submission start time
