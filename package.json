@@ -4,7 +4,7 @@
   "description": "Get those App Store Connect notifications delivered directly to Slack.",
   "main": "src/poll-itc.js",
   "scripts": {
-    "start": "NODE_ENV=development node src/poll-itc.js",
+    "start": "node src/poll-itc.js",
     "start-prod": "NODE_ENV=production node src/poll-itc.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint-fix": "./node_modules/.bin/eslint . --fix",
