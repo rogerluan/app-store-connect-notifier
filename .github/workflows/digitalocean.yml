@@ -26,7 +26,38 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm i
-    - run: npm run build --if-present
-    - run: gem install rake && bundle install
-    - run: pm2 restart Notifier
+        
+    - name: Install dependencies
+      run: |
+        npm i
+        npm run build --if-present
+        gem install rake && bundle install
+    
+    - name: Create and populate .env file
+      env:
+        SPACESHIP_CONNECT_API_KEY: ${{ secrets.SPACESHIP_CONNECT_API_KEY }}
+        SPACESHIP_CONNECT_API_ISSUER_ID: ${{ secrets.SPACESHIP_CONNECT_API_ISSUER_ID }}
+        SPACESHIP_CONNECT_API_KEY_ID: ${{ secrets.SPACESHIP_CONNECT_API_KEY_ID }}
+        BUNDLE_IDENTIFIERS: ${{ secrets.BUNDLE_IDENTIFIERS }}
+        BOT_SLACK_WEBHOOK_URL: ${{ secrets.BOT_SLACK_WEBHOOK_URL }}
+        BOT_STATUS_SLACK_WEBHOOK_URL: ${{ secrets.BOT_STATUS_SLACK_WEBHOOK_URL }}
+        SLACK_CHANNEL_NAME: ${{ secrets.SLACK_CHANNEL_NAME }}
+        ITC_TEAM_IDS: ${{ secrets.ITC_TEAM_IDS }}
+        POLL_TIME_IN_SECONDS: ${{ secrets.POLL_TIME_IN_SECONDS }}
+        NUMBER_OF_BUILDS: ${{ secrets.NUMBER_OF_BUILDS }}
+      run: |
+        touch .Renviron
+        echo SPACESHIP_CONNECT_API_KEY="$SPACESHIP_CONNECT_API_KEY" >> .env
+        echo SPACESHIP_CONNECT_API_ISSUER_ID="$SPACESHIP_CONNECT_API_ISSUER_ID" >> .env
+        echo SPACESHIP_CONNECT_API_KEY_ID="$SPACESHIP_CONNECT_API_KEY_ID" >> .env
+        echo BUNDLE_IDENTIFIERS="$BUNDLE_IDENTIFIERS" >> .env
+        echo BOT_SLACK_WEBHOOK_URL="$BOT_SLACK_WEBHOOK_URL" >> .env
+        echo BOT_STATUS_SLACK_WEBHOOK_URL="$BOT_STATUS_SLACK_WEBHOOK_URL" >> .env
+        echo SLACK_CHANNEL_NAME="$SLACK_CHANNEL_NAME" >> .env
+        echo ITC_TEAM_IDS="$ITC_TEAM_IDS" >> .env
+        echo POLL_TIME_IN_SECONDS="$POLL_TIME_IN_SECONDS" >> .env
+        echo NUMBER_OF_BUILDS="$NUMBER_OF_BUILDS" >> .env
+      shell: bash
+    
+    - name: Run application
+      run: pm2 restart Notifier
