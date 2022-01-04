@@ -47,16 +47,16 @@ jobs:
         NUMBER_OF_BUILDS: ${{ secrets.NUMBER_OF_BUILDS }}
       run: |
         touch .env.jysan
-        echo SPACESHIP_CONNECT_API_KEY="$SPACESHIP_CONNECT_API_KEY" >> .env.jysan
-        echo SPACESHIP_CONNECT_API_ISSUER_ID="$SPACESHIP_CONNECT_API_ISSUER_ID" >> .env.jysan
-        echo SPACESHIP_CONNECT_API_KEY_ID="$SPACESHIP_CONNECT_API_KEY_ID" >> .env.jysan
-        echo BUNDLE_IDENTIFIERS="$BUNDLE_IDENTIFIERS" >> .env.jysan
-        echo BOT_SLACK_WEBHOOK_URL="$BOT_SLACK_WEBHOOK_URL" >> .env.jysan
-        echo BOT_STATUS_SLACK_WEBHOOK_URL="$BOT_STATUS_SLACK_WEBHOOK_URL" >> .env.jysan
-        echo SLACK_CHANNEL_NAME="$SLACK_CHANNEL_NAME" >> .env.jysan
-        echo ITC_TEAM_IDS="$ITC_TEAM_IDS" >> .env
-        echo POLL_TIME_IN_SECONDS="$POLL_TIME_IN_SECONDS" >> .env.jysan
-        echo NUMBER_OF_BUILDS="$NUMBER_OF_BUILDS" >> .env.jysan
+        echo SPACESHIP_CONNECT_API_KEY="\"$SPACESHIP_CONNECT_API_KEY\"" >> .env.jysan
+        echo SPACESHIP_CONNECT_API_ISSUER_ID="\"$SPACESHIP_CONNECT_API_ISSUER_ID\"" >> .env.jysan
+        echo SPACESHIP_CONNECT_API_KEY_ID="\"$SPACESHIP_CONNECT_API_KEY_ID\"" >> .env.jysan
+        echo BUNDLE_IDENTIFIERS="\"$BUNDLE_IDENTIFIERS\"" >> .env.jysan
+        echo BOT_SLACK_WEBHOOK_URL="\"$BOT_SLACK_WEBHOOK_URL\"" >> .env.jysan
+        echo BOT_STATUS_SLACK_WEBHOOK_URL="\"$BOT_STATUS_SLACK_WEBHOOK_URL\"" >> .env.jysan
+        echo SLACK_CHANNEL_NAME="\"$SLACK_CHANNEL_NAME\"" >> .env.jysan
+        echo ITC_TEAM_IDS="\"$ITC_TEAM_IDS\"" >> .env
+        echo POLL_TIME_IN_SECONDS="\"$POLL_TIME_IN_SECONDS\"" >> .env.jysan
+        echo NUMBER_OF_BUILDS="\"$NUMBER_OF_BUILDS\"" >> .env.jysan
       shell: bash
     
     - name: Run application
