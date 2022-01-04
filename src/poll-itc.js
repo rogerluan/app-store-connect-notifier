@@ -45,6 +45,8 @@ function _checkAppStatus(currentAppInfo) {
     if (!lastAppInfo || lastAppInfo.status != currentAppInfo.status || debug) {
         if (lastAppInfo) {
             poster.slackApp(currentAppInfo, db.get(submissionStartkey))
+        } else {
+            poster.slackMessage("App Store Connect Notifier Bot has just restarted.")
         }
         // Store submission start time
         if (currentAppInfo.status == "WAITING_FOR_REVIEW") {
