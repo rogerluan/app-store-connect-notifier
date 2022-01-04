@@ -33,7 +33,7 @@ jobs:
         npm run build --if-present
         gem install rake && bundle install
     
-    - name: Create and populate .env file
+    - name: Create and populate .env.jysan file
       env:
         SPACESHIP_CONNECT_API_KEY: ${{ secrets.SPACESHIP_CONNECT_API_KEY }}
         SPACESHIP_CONNECT_API_ISSUER_ID: ${{ secrets.SPACESHIP_CONNECT_API_ISSUER_ID }}
@@ -46,7 +46,7 @@ jobs:
         POLL_TIME_IN_SECONDS: ${{ secrets.POLL_TIME_IN_SECONDS }}
         NUMBER_OF_BUILDS: ${{ secrets.NUMBER_OF_BUILDS }}
       run: |
-        touch .Renviron
+        touch .env
         echo SPACESHIP_CONNECT_API_KEY="$SPACESHIP_CONNECT_API_KEY" >> .env
         echo SPACESHIP_CONNECT_API_ISSUER_ID="$SPACESHIP_CONNECT_API_ISSUER_ID" >> .env
         echo SPACESHIP_CONNECT_API_KEY_ID="$SPACESHIP_CONNECT_API_KEY_ID" >> .env
