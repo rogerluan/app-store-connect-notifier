@@ -26,6 +26,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
+    - name: Stop previous notifier
+      run: pm2 stop 0
         
     - name: Install dependencies
       run: |
@@ -60,6 +63,4 @@ jobs:
       shell: bash
     
     - name: Run application
-      run: |
-        pm2 stop 0
-        pm2 restart Notifier
+      run: pm2 restart Notifier
