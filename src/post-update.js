@@ -12,15 +12,27 @@ function postToSlack(message, attachment) {
     }
 }
 
+function postToTelegram(message) {
+    const botToken = process.env.TELEGRAM_BOT_TOKEN
+    const chatIds = process.env.TELEGRAM_CHAT_IDS
+    if (botToken && chatIds) {
+        chatIds.split(",").forEach((chatId) => {
+            postUsingBotToken(botToken, chatId, message)
+        })
+    }
+}
+
 function postToSlackApp(appInfo, submissionStartDate) {
     const message = `The status of your app *${appInfo.name}* has been changed to *${appInfo.status.formatted()}*`
     const attachment = slackAttachment(appInfo, submissionStartDate)
+    postToTelegram(message)
     postToSlack(message, attachment)
 }
 
 function postToSlackBuild(appInfo, buildInfo) {
     const message = `The status of build version *${buildInfo.version}* for your app *${appInfo.name}* has been changed to *${buildInfo.status}*`
     const attachment = slackAttachmentBuild(message, appInfo, buildInfo)
+    postToTelegram(message)
     postToSlack(message, attachment)
 }
 
@@ -120,6 +132,19 @@ function sendSlackMessage(webhookURL, messageBody) {
         req.write(messageBody)
         req.end()
     })
+}
+
+function postUsingBotToken(token, chatId, message) {
+    const https = require("https")
+    
+    const requestOptions = {
+        method: "GET"
+    }
+
+    const formattedMessage = encodeURI(`${message}\n\nFor get more detailed info tap to /releases`)
+
+    const req = https.request(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${formattedMessage}&parse_mode=markdown`, requestOptions)
+    req.end()
 }
 
 function slackAttachment(appInfo, submissionStartDate) {
@@ -235,5 +260,6 @@ function colorForStatus(status) {
 module.exports = {
     slackApp: postToSlackApp,
     slackBuild: postToSlackBuild,
-    slackMessage: postMessageToSlack
+    slackMessage: postMessageToSlack,
+    telegramMessage: postToTelegram,
 }
