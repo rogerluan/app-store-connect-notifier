@@ -47,6 +47,8 @@ jobs:
         ITC_TEAM_IDS: ${{ secrets.ITC_TEAM_IDS }}
         POLL_TIME_IN_SECONDS: ${{ secrets.POLL_TIME_IN_SECONDS }}
         NUMBER_OF_BUILDS: ${{ secrets.NUMBER_OF_BUILDS }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
       run: |
         touch .env.jysan
         echo SPACESHIP_CONNECT_API_KEY="\"$SPACESHIP_CONNECT_API_KEY\"" >> .env.jysan
@@ -59,6 +61,8 @@ jobs:
         echo ITC_TEAM_IDS="\"$ITC_TEAM_IDS\"" >> .env
         echo POLL_TIME_IN_SECONDS="\"$POLL_TIME_IN_SECONDS\"" >> .env.jysan
         echo NUMBER_OF_BUILDS="\"$NUMBER_OF_BUILDS\"" >> .env.jysan
+        echo TELEGRAM_BOT_TOKEN="\"$TELEGRAM_BOT_TOKEN\"" >> .env.jysan
+        echo TELEGRAM_CHAT_IDS="\"$TELEGRAM_CHAT_IDS\"" >> .env.jysan
       shell: bash
     
     - name: Run application
