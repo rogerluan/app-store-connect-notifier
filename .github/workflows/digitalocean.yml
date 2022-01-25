@@ -33,8 +33,7 @@ jobs:
     - name: Install dependencies
       run: |
         npm i
-        npm run build --if-present
-        gem install rake && bundle install
+        bundle install
     
     - name: Create and populate .env.jysan file
       env:
