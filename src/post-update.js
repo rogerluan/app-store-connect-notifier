@@ -1,4 +1,5 @@
 const moment = require("moment")
+const JiraApi = require("jira-client")
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 require("./string-utilities.js")
 
@@ -12,12 +13,12 @@ function postToSlack(message, attachment) {
     }
 }
 
-function postToTelegram(message) {
+function postToTelegram(message, appInfo, buildInfo) {
     const botToken = process.env.TELEGRAM_BOT_TOKEN
     const chatIds = process.env.TELEGRAM_CHAT_IDS
     if (botToken && chatIds) {
         chatIds.split(",").forEach((chatId) => {
-            postUsingBotToken(botToken, chatId, message)
+            postUsingBotToken(botToken, chatId, message, appInfo, buildInfo)
         })
     }
 }
@@ -32,7 +33,7 @@ function postToSlackApp(appInfo, submissionStartDate) {
 function postToSlackBuild(appInfo, buildInfo) {
     const message = `The status of build version *${buildInfo.version}* for your app *${appInfo.name}* has been changed to *${buildInfo.status}*`
     const attachment = slackAttachmentBuild(message, appInfo, buildInfo)
-    postToTelegram(message)
+    postToTelegram(message, appInfo, buildInfo)
     postToSlack(message, attachment)
 }
 
@@ -134,16 +135,34 @@ function sendSlackMessage(webhookURL, messageBody) {
     })
 }
 
-function postUsingBotToken(token, chatId, message) {
+async function postUsingBotToken(token, chatId, message, appInfo, buildInfo) {
     const https = require("https")
-    
-    const requestOptions = {
-        method: "GET"
+    const jira = new JiraApi({
+        protocol: 'https',
+        host: process.env.ATLASSIAN_HOST,
+        username: process.env.ATLASSIAN_USERNAME,
+        password: process.env.ATLASSIAN_TOKEN,
+        apiVersion: '2',
+        strictSSL: true
+      })
+
+    const version = appInfo.version
+    const status = buildInfo.status
+
+    var messageBody = message
+
+    if (status === "PROCESSING") {
+        await jira.searchJira(`summary ~ "release ios ${version}"`)
+        .then((response) => {
+            response.issues.forEach((issue) => {
+                messageBody += `\n\nЗадачи которые входят в релиз:\n${issue.fields.description}`
+            })
+        })
     }
 
-    const formattedMessage = encodeURI(`${message}\n\nFor get more detailed info tap to /releases`)
+    messageBody += "\n\nFor get more detailed info tap to @strong\\_manager\\_bot"
 
-    const req = https.request(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${formattedMessage}&parse_mode=markdown`, requestOptions)
+    const req = https.request(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURI(messageBody)}&parse_mode=markdown`)
     req.end()
 }
 
