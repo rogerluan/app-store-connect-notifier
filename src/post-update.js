@@ -13,12 +13,12 @@ function postToSlack(message, attachment) {
     }
 }
 
-function postToTelegram(message, appInfo, buildInfo) {
+function postToTelegram(version, status, appName) {
     const botToken = process.env.TELEGRAM_BOT_TOKEN
     const chatIds = process.env.TELEGRAM_CHAT_IDS
     if (botToken && chatIds) {
         chatIds.split(",").forEach((chatId) => {
-            postUsingBotToken(botToken, chatId, message, appInfo, buildInfo)
+            postUsingBotToken(botToken, chatId, version, status, appName)
         })
     }
 }
@@ -26,15 +26,15 @@ function postToTelegram(message, appInfo, buildInfo) {
 function postToSlackApp(appInfo, submissionStartDate) {
     const message = `The status of your app *${appInfo.name}* has been changed to *${appInfo.status.formatted()}*`
     const attachment = slackAttachment(appInfo, submissionStartDate)
-    postToTelegram(message)
     postToSlack(message, attachment)
+    postToTelegram(appInfo.version, appInfo.status.formatted(), appInfo.name)
 }
 
 function postToSlackBuild(appInfo, buildInfo) {
     const message = `The status of build version *${buildInfo.version}* for your app *${appInfo.name}* has been changed to *${buildInfo.status}*`
     const attachment = slackAttachmentBuild(message, appInfo, buildInfo)
-    postToTelegram(message, appInfo, buildInfo)
     postToSlack(message, attachment)
+    postToTelegram(appInfo.version, buildInfo.status, appInfo.name)
 }
 
 function postMessageToSlack(message) {
@@ -135,7 +135,7 @@ function sendSlackMessage(webhookURL, messageBody) {
     })
 }
 
-async function postUsingBotToken(token, chatId, message, appInfo, buildInfo) {
+async function postUsingBotToken(token, chatId, version, status, appName) {
     const https = require("https")
     const jira = new JiraApi({
         protocol: 'https',
@@ -146,24 +146,98 @@ async function postUsingBotToken(token, chatId, message, appInfo, buildInfo) {
         strictSSL: true
       })
 
-    const version = appInfo.version
-    const status = buildInfo.status
+    var message = `Статус вашего приложения *${appName}* с версией *${version}* был изменен на *${status}*`
 
-    var messageBody = message
-
-    if (status === "PROCESSING") {
-        await jira.searchJira(`summary ~ "release ios ${version}"`)
+    if (status === "PROCESSING" || status === "VALID") {
+        var lastVersionNumber = 0
+        var lastVersionIssue = null
+        await jira.searchJira(`summary ~ "release ios"`)
         .then((response) => {
-            response.issues.forEach((issue) => {
-                messageBody += `\n\nЗадачи которые входят в релиз:\n${issue.fields.description}`
+            var issue = null
+            response.issues.forEach((tempIssue) => {
+                const matchedVersion = tempIssue.fields.summary.match(/[\d.]*\d+/)
+                if (matchedVersion != null) {
+                    if (matchedVersion.includes(version)) {
+                        issue = tempIssue
+                    }
+                    var versionNumber = parseFloat(matchedVersion[0])
+                    if (versionNumber != NaN && lastVersionNumber < versionNumber) {
+                        lastVersionNumber = versionNumber
+                        lastVersionIssue = tempIssue
+                    }
+                }
             })
+            if (issue != null) {
+                message += `\n\nЗадачи которые входят в релиз:\n${issue.fields.description}`
+            }
         })
+        // checkAndCreateReleaseIssue(lastVersionIssue)
     }
 
-    messageBody += "\n\nFor get more detailed info tap to @strong\\_manager\\_bot"
+    message += "\n\nДля получения более подробной информаций перейдите на @strong\\_manager\\_bot"
 
     const req = https.request(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURI(messageBody)}&parse_mode=markdown`)
     req.end()
+}
+
+async function checkAndCreateReleaseIssue(lastVersionIssue) {
+    if (lastVersionIssue != null && lastVersionIssue.fields.resolutiondate != null) {
+        var bugs = []
+        var issues = []
+        const date = new Date(lastVersionIssue.fields.resolutiondate)
+        const formattedDate = moment(date).format("YYYY/MM/DD HH:mm")
+        await jira.searchJira(`resolved > "${formattedDate}" and summary ~ "ios" and status = "Done" and summary !~ "release ios"`)
+        .then((response) => {
+            response.issues.forEach((tempIssue) => {
+                if (tempIssue.fields.issuetype.name === "Bug" || tempIssue.fields.issuetype.name === "Баг") {
+                    bugs.push(tempIssue)
+                } else {
+                    issues.push(tempIssue)
+                }
+            })
+        })
+        if (bugs.length > 0 || issues.length > 0) {
+            var issueBody = ""
+            if (issues.length > 0) {
+                issueBody += `What's new:\n`
+                issues.forEach((issue) => {
+                    issueBody += `${issue.key}: ${issue.fields.summary}\n`
+                })
+            }
+            if (bugs.length > 0) {
+                issueBody += `Bugs:\n`
+                bugs.forEach((bug) => {
+                    issueBody += `${bug.key}: ${bug.fields.summary}\n`
+                })
+            }
+            const issue = {
+                "fields": {
+                  "project": {
+                    "id": "10221" // JSN
+                  },
+                  "summary": "[release][ios] " + version,
+                  "issuetype": {
+                    "id": "10226" // Task
+                  },
+                  "assignee": {
+                    "name": "Azamat Kalmurzayev"
+                  },
+                  "priority": {
+                    "id": "2" // Hight
+                  },
+                  "labels": ["release-task"],
+                  "description": issueBody,
+                }
+            }
+            jira.addNewIssue(issue)
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((err) => {
+                conoso.log(err)
+            })
+        }
+    }
 }
 
 function slackAttachment(appInfo, submissionStartDate) {
