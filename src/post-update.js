@@ -176,7 +176,7 @@ async function postUsingBotToken(token, chatId, version, status, appName) {
 
     message += "\n\nДля получения более подробной информаций перейдите на @strong\\_manager\\_bot"
 
-    const req = https.request(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURI(messageBody)}&parse_mode=markdown`)
+    const req = https.request(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURI(message)}&parse_mode=markdown`)
     req.end()
 }
 
