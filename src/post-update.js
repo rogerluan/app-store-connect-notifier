@@ -150,7 +150,6 @@ async function postUsingBotToken(token, chatId, version, status, appName) {
 
     if (status === "PROCESSING" || status === "VALID") {
         var lastVersionNumber = 0
-        var lastVersionIssue = null
         await jira.searchJira(`summary ~ "release ios"`)
         .then((response) => {
             var issue = null
@@ -163,15 +162,16 @@ async function postUsingBotToken(token, chatId, version, status, appName) {
                     var versionNumber = parseFloat(matchedVersion[0])
                     if (versionNumber != NaN && lastVersionNumber < versionNumber) {
                         lastVersionNumber = versionNumber
-                        lastVersionIssue = tempIssue
                     }
                 }
             })
             if (issue != null) {
                 message += `\n\nЗадачи которые входят в релиз:\n${issue.fields.description}`
+            } else {
+                // const resultMessage = await checkAndCreateReleaseIssue(lastVersionNumber)
+                // message += `\n\nЗадачи которые входят в релиз:\n${resultMessage}`
             }
         })
-        // checkAndCreateReleaseIssue(lastVersionIssue)
     }
 
     message += "\n\nДля получения более подробной информаций перейдите на @strong\\_manager\\_bot"
@@ -180,63 +180,61 @@ async function postUsingBotToken(token, chatId, version, status, appName) {
     req.end()
 }
 
-async function checkAndCreateReleaseIssue(lastVersionIssue) {
-    if (lastVersionIssue != null && lastVersionIssue.fields.resolutiondate != null) {
-        var bugs = []
-        var issues = []
-        const date = new Date(lastVersionIssue.fields.resolutiondate)
-        const formattedDate = moment(date).format("YYYY/MM/DD HH:mm")
-        await jira.searchJira(`resolved > "${formattedDate}" and summary ~ "ios" and status = "Done" and summary !~ "release ios"`)
-        .then((response) => {
-            response.issues.forEach((tempIssue) => {
-                if (tempIssue.fields.issuetype.name === "Bug" || tempIssue.fields.issuetype.name === "Баг") {
-                    bugs.push(tempIssue)
-                } else {
-                    issues.push(tempIssue)
-                }
-            })
+async function checkAndCreateReleaseIssue(lastVersion) {
+    var bugs = []
+    var issues = []
+    const date = new Date(lastVersionIssue.fields.resolutiondate)
+    const formattedDate = moment(date).format("YYYY/MM/DD HH:mm")
+    await jira.searchJira(``)
+    .then((response) => {
+        response.issues.forEach((tempIssue) => {
+            if (tempIssue.fields.issuetype.name === "Bug" || tempIssue.fields.issuetype.name === "Баг") {
+                bugs.push(tempIssue)
+            } else {
+                issues.push(tempIssue)
+            }
         })
-        if (bugs.length > 0 || issues.length > 0) {
-            var issueBody = ""
-            if (issues.length > 0) {
-                issueBody += `What's new:\n`
-                issues.forEach((issue) => {
-                    issueBody += `${issue.key}: ${issue.fields.summary}\n`
-                })
-            }
-            if (bugs.length > 0) {
-                issueBody += `Bugs:\n`
-                bugs.forEach((bug) => {
-                    issueBody += `${bug.key}: ${bug.fields.summary}\n`
-                })
-            }
-            const issue = {
-                "fields": {
-                  "project": {
-                    "id": "10221" // JSN
-                  },
-                  "summary": "[release][ios] " + version,
-                  "issuetype": {
-                    "id": "10226" // Task
-                  },
-                  "assignee": {
-                    "name": "Azamat Kalmurzayev"
-                  },
-                  "priority": {
-                    "id": "2" // Hight
-                  },
-                  "labels": ["release-task"],
-                  "description": issueBody,
-                }
-            }
-            jira.addNewIssue(issue)
-            .then((response) => {
-                console.log(response)
-            })
-            .catch((err) => {
-                conoso.log(err)
+    })
+    if (bugs.length > 0 || issues.length > 0) {
+        var issueBody = ""
+        if (issues.length > 0) {
+            issueBody += `What's new:\n`
+            issues.forEach((issue) => {
+                issueBody += `${issue.key}: ${issue.fields.summary}\n`
             })
         }
+        if (bugs.length > 0) {
+            issueBody += `Bugs:\n`
+            bugs.forEach((bug) => {
+                issueBody += `${bug.key}: ${bug.fields.summary}\n`
+            })
+        }
+        const issue = {
+            "fields": {
+              "project": {
+                "id": "10221" // JSN
+              },
+              "summary": "[release][ios] " + version,
+              "issuetype": {
+                "id": "10226" // Task
+              },
+              "assignee": {
+                "name": "Azamat Kalmurzayev"
+              },
+              "priority": {
+                "id": "2" // Hight
+              },
+              "labels": ["release-task"],
+              "description": issueBody,
+            }
+        }
+        jira.addNewIssue(issue)
+        .then((response) => {
+            console.log(response)
+        })
+        .catch((err) => {
+            conoso.log(err)
+        })
     }
 }
 
