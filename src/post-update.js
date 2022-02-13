@@ -211,7 +211,7 @@ async function checkAndCreateReleaseIssue(jira, lastVersion) {
             console.log(response)
         })
         .catch((err) => {
-            conoso.warn(err)
+            console.warn(err)
         })
         return notes
     }
