@@ -8,7 +8,7 @@ function postToSlack(message, attachment) {
     if (webhook_url) {
         postUsingWebhook(message, webhook_url, [attachment])
     } else {
-        const channel = process.env.SLACK_CHANNEL_NAME || "#ios-app-updates"
+        const channel = process.env.SLACK_CHANNEL_NAME || "#bitrise-jysan-ios"
         post(message, channel, [attachment])
     }
 }
@@ -158,6 +158,7 @@ async function postUsingBotToken(token, chatId, version, status, appName) {
                 if (matchedVersion != null) {
                     if (matchedVersion.includes(version)) {
                         issue = tempIssue
+                        lastVersionNumber = 0
                     }
                     var versionNumber = parseFloat(matchedVersion[0])
                     if (versionNumber != NaN && lastVersionNumber < versionNumber) {
@@ -167,11 +168,14 @@ async function postUsingBotToken(token, chatId, version, status, appName) {
             })
             if (issue != null) {
                 message += `\n\nЗадачи которые входят в релиз:\n${issue.fields.description}`
-            } else {
-                // const resultMessage = await checkAndCreateReleaseIssue(lastVersionNumber)
-                // message += `\n\nЗадачи которые входят в релиз:\n${resultMessage}`
             }
         })
+        if (lastVersionNumber != 0) {
+            const resultMessage = await checkAndCreateReleaseIssue(jira, 2.68)
+            if (resultMessage.length > 0) {
+                message += `\n\nЗадачи которые входят в релиз:\n${resultMessage}`
+            }
+        }
     }
 
     message += "\n\nДля получения более подробной информаций перейдите на @strong\\_manager\\_bot"
@@ -180,41 +184,15 @@ async function postUsingBotToken(token, chatId, version, status, appName) {
     req.end()
 }
 
-async function checkAndCreateReleaseIssue(lastVersion) {
-    var bugs = []
-    var issues = []
-    const date = new Date(lastVersionIssue.fields.resolutiondate)
-    const formattedDate = moment(date).format("YYYY/MM/DD HH:mm")
-    await jira.searchJira(``)
-    .then((response) => {
-        response.issues.forEach((tempIssue) => {
-            if (tempIssue.fields.issuetype.name === "Bug" || tempIssue.fields.issuetype.name === "Баг") {
-                bugs.push(tempIssue)
-            } else {
-                issues.push(tempIssue)
-            }
-        })
-    })
-    if (bugs.length > 0 || issues.length > 0) {
-        var issueBody = ""
-        if (issues.length > 0) {
-            issueBody += `What's new:\n`
-            issues.forEach((issue) => {
-                issueBody += `${issue.key}: ${issue.fields.summary}\n`
-            })
-        }
-        if (bugs.length > 0) {
-            issueBody += `Bugs:\n`
-            bugs.forEach((bug) => {
-                issueBody += `${bug.key}: ${bug.fields.summary}\n`
-            })
-        }
+async function checkAndCreateReleaseIssue(jira, lastVersion) {
+    const notes = await execShellCommand(`sh ci_generate_release_notes.sh ${process.env.GIT_CLONE_URL} release/${lastVersion} https://${process.env.ATLASSIAN_HOST} ${process.env.ATLASSIAN_USERNAME} ${process.env.ATLASSIAN_TOKEN}`)
+    if (notes.length > 0) {
         const issue = {
             "fields": {
               "project": {
                 "id": "10221" // JSN
               },
-              "summary": "[release][ios] " + version,
+              "summary": "[release][ios] " + lastVersion,
               "issuetype": {
                 "id": "10226" // Task
               },
@@ -225,7 +203,7 @@ async function checkAndCreateReleaseIssue(lastVersion) {
                 "id": "2" // Hight
               },
               "labels": ["release-task"],
-              "description": issueBody,
+              "description": notes,
             }
         }
         jira.addNewIssue(issue)
@@ -233,9 +211,11 @@ async function checkAndCreateReleaseIssue(lastVersion) {
             console.log(response)
         })
         .catch((err) => {
-            conoso.log(err)
+            conoso.warn(err)
         })
+        return notes
     }
+    return ""
 }
 
 function slackAttachment(appInfo, submissionStartDate) {
@@ -276,6 +256,30 @@ function slackAttachment(appInfo, submissionStartDate) {
         // })
     }
     return attachment
+}
+
+/**
+ * Executes a shell command and return it as a Promise.
+ * @param cmd {string}
+ * @return {Promise<string>}
+ */
+function execShellCommand(cmd) {
+    const exec = require('child_process').exec;
+    return new Promise((resolve, reject) => {
+        exec(cmd, (error, stdout, stderr) => {
+            if (error) {
+                console.warn(error);
+                resolve("")
+                return
+            }
+            if (stdout) {
+                resolve(stdout)
+            } else {
+                console.warn(stderr)
+                resolve("")
+            }
+        });
+    });
 }
 
 function slackAttachmentBuild(fallback, appInfo, buildInfo) {
