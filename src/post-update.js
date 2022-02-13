@@ -27,7 +27,7 @@ function postToSlackApp(appInfo, submissionStartDate) {
     const message = `The status of your app *${appInfo.name}* has been changed to *${appInfo.status.formatted()}*`
     const attachment = slackAttachment(appInfo, submissionStartDate)
     postToSlack(message, attachment)
-    postToTelegram(appInfo.version, appInfo.status.formatted(), appInfo.name)
+    postToTelegram(appInfo.version, appInfo.status, appInfo.name)
 }
 
 function postToSlackBuild(appInfo, buildInfo) {
@@ -146,7 +146,7 @@ async function postUsingBotToken(token, chatId, version, status, appName) {
         strictSSL: true
       })
 
-    var message = `Статус вашего приложения *${appName}* с версией *${version}* был изменен на *${status}*`
+    var message = `Статус вашего приложения *${appName}* с версией *${version}* был изменен на *${status.formatted()}*`
 
     if (status === "PROCESSING" || status === "VALID") {
         var lastVersionNumber = 0
