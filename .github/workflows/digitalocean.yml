@@ -31,9 +31,7 @@ jobs:
       run: pm2 stop 0
         
     - name: Install dependencies
-      run: |
-        npm i
-        bundle install
+      run: make init
     
     - name: Create and populate .env.jysan file
       env:
