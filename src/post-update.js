@@ -148,7 +148,7 @@ async function postUsingBotToken(token, chatId, version, status, appName) {
 
     var message = `Статус вашего приложения *${appName}* с версией *${version}* был изменен на *${status.formatted()}*`
 
-    if (status === "PROCESSING" || status === "VALID") {
+    if (status === "PROCESSING") {
         var lastVersionNumber = 0
         await jira.searchJira(`summary ~ "release ios"`)
         .then((response) => {
@@ -171,7 +171,7 @@ async function postUsingBotToken(token, chatId, version, status, appName) {
             }
         })
         if (lastVersionNumber != 0) {
-            const resultMessage = await checkAndCreateReleaseIssue(jira, 2.68)
+            const resultMessage = await checkAndCreateReleaseIssue(jira, lastVersionNumber)
             if (resultMessage.length > 0) {
                 message += `\n\nЗадачи которые входят в релиз:\n${resultMessage}`
             }
