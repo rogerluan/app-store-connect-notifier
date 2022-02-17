@@ -30,8 +30,11 @@ jobs:
     - name: Stop previous notifier
       run: pm2 stop 0
         
-    - name: Install dependencies
-      run: make init
+    - name: Fastlane install
+      run: bundle install
+
+    - name: Dependencies install
+      run: npm install
     
     - name: Create and populate .env.jysan file
       env:
