@@ -64,7 +64,7 @@ export ITC_USERNAME="username@example.email"
 # Your App Store Connect password. Required if you're in a non-interactive environment. In interactive environments, it will ask for the password when executing and save it in Keychain.
 export ITC_PASSWORD="your-app-store-connect-account-password"
 
-# The [App Store Connect API key](https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api). Use this when on a non-interactive environment and you have 2FA set up. When using this, ITC_USERNAME is not used.
+# The [App Store Connect API key](https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api). Use this when on a non-interactive environment and you have 2FA set up. When using this, neither ITC_USERNAME or ITC_PASSWORD are used.
 export SPACESHIP_CONNECT_API_KEY='-----BEGIN PRIVATE KEY-----
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
