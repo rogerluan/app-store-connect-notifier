@@ -234,7 +234,7 @@ DEPENDENCIES
   rubocop
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 3.1.2p20
 
 BUNDLED WITH
    2.1.4
