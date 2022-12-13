@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-ruby "~> 2.6"
+ruby "~> 3.1"
 
 gem "fastlane"
 gem "rubocop", require: false
