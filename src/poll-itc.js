@@ -31,6 +31,8 @@ function checkAppStatus() {
             console.log(stderr)
         }
     })
+
+    exec("find /tmp/ -maxdepth 1 -name 'spaceship*.log' -mtime +7 -delete")
 }
 
 function _checkAppStatus(currentAppInfo) {
