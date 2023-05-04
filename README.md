@@ -129,7 +129,7 @@ services:
     hostname: app-store-connect-notifier
     image: rogerluan/app-store-connect-notifier
     environment:
-      SPACESHIP_CONNECT_API_KEY: >
+      SPACESHIP_CONNECT_API_KEY: |
         -----BEGIN PRIVATE KEY-----
         xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
