@@ -22,7 +22,7 @@
     ·
     <a href="https://github.com/rogerluan/app-store-connect-notifier/issues/new/choose">Request Feature</a>
   </p>
-  <img src="https://visitor-badge.glitch.me/badge?page_id=rogerluan.app-store-connect-notifier"></br>
+  <img src="https://views.whatilearened.today/views/github/rogerluan/app-store-connect-notifier.svg"></br>
 </div>
 
 # Intro
