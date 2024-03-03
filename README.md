@@ -47,6 +47,8 @@ There are 2 versions of this service: a self-hosted version and a SaaS version â
 
 While the self-hosted version is free, it requires you to host and maintain its server yourself. The SaaS version is a paid service, but it's fully managed and has a lot more features, such as support for Android apps, and a web dashboard to manage multiple apps, workflows, Slack channels, notification preferences, and more.
 
+You can read more about the SaaS announcement here: https://github.com/rogerluan/app-store-connect-notifier/discussions/270
+
 ## SaaS
 
 You can use the SaaS version of this app, which evolved from this project, but eventually became a much more complete version of this simple tool. You can find out about it here:
