@@ -43,7 +43,7 @@ Be notified when your builds are ready to be submitted!
 
 # Set Up
 
-There are 2 versions of this service: a self-hosted version and a SaaS version — [Statused](https://statused.com?ref=app-store-connect-notifier).
+There are 2 versions of this service: a self-hosted version and a SaaS version — [Statused](https://statused.com/?ref=app-store-connect-notifier&?utm_source=app-store-connect-notifier&?utm_content=readme-set-up).
 
 While the self-hosted version is free, it requires you to host and maintain its server yourself. The SaaS version is a paid service, but it's fully managed and has a lot more features, such as support for Android apps, and a web dashboard to manage multiple apps, workflows, Slack channels, notification preferences, and more.
 
@@ -57,7 +57,7 @@ Forget about _"When did release v2.1.3 go live again?"_ and _"Is the app ready t
 
 Statused monitors App Store Connect and Google Play Store and sends you notifications about the status of your app release progress directly on Slack.
 
-Learn more: [statused.com](https://statused.com?ref=app-store-connect-notifier)
+Learn more: [statused.com](https://statused.com/?ref=app-store-connect-notifier&?utm_source=app-store-connect-notifier&?utm_content=readme-saas)
 
 ## Self-hosted
 
