@@ -27,7 +27,7 @@
 
 # Intro
 
-App Store Connect Notifier is a node.js app fetches your app and build info directly from App Store Connect and posts changes in Slack as a bot. Since App Store Connect doesn't provide event webhooks (yet), these scripts use polling with the help of _fastlane_'s [Spaceship](https://github.com/fastlane/fastlane/tree/master/spaceship).
+App Store Connect Notifier is a node.js app that fetches your app and build info directly from App Store Connect and posts changes in Slack as a bot. Since App Store Connect doesn't provide event webhooks (yet), these scripts use polling with the help of _fastlane_'s [Spaceship](https://github.com/fastlane/fastlane/tree/master/spaceship).
 
 # Preview
 
@@ -43,18 +43,38 @@ Be notified when your builds are ready to be submitted!
 
 # Set Up
 
-## Prerequisites
+There are 2 versions of this service: a self-hosted version and a SaaS version — [Statused](https://statused.com?ref=app-store-connect-notifier).
+
+While the self-hosted version is free, it requires you to host and maintain its server yourself. The SaaS version is a paid service, but it's fully managed and has a lot more features, such as support for Android apps, and a web dashboard to manage multiple apps, workflows, Slack channels, notification preferences, and more.
+
+## SaaS
+
+You can use the SaaS version of this app, which evolved from this project, but eventually became a much more complete version of this simple tool. You can find out about it here:
+
+<img width="400" alt="Statused Social Banner" src="https://statused.com/assets/social-banner.png">
+
+Forget about _"When did release v2.1.3 go live again?"_ and _"Is the app ready to be tested yet?"_
+
+Statused monitors App Store Connect and Google Play Store and sends you notifications about the status of your app release progress directly on Slack.
+
+Learn more: [statused.com](https://statused.com?ref=app-store-connect-notifier)
+
+## Self-hosted
+
+If you prefer to host it yourself, you can follow the instructions below.
+
+### Prerequisites
 
 You will need a Slack Bot to post updates on your behalf to your Slack workspace.
 If you still don't have one, check out this article on [how to create a bot for your workspace](https://slack.com/intl/en-br/help/articles/115005265703-Create-a-bot-for-your-workspace).
 
-### Method 1: Heroku
+#### Method 1: Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-### Method 2: Hosting Manually
+#### Method 2: Hosting Manually
 
-#### Environment Variables
+##### Environment Variables
 
 Be sure to set these to the appropriate values:
 
@@ -106,7 +126,7 @@ export POLL_TIME_IN_SECONDS=120
 export NUMBER_OF_BUILDS=1
 ```
 
-### Method 3: Docker
+#### Method 3: Docker
 
 Use environment variables similarly to Method 2
 
@@ -119,7 +139,7 @@ docker run \
   rogerluan/app-store-connect-notifier:latest
 ```
 
-### Method 4: Docker Compose
+#### Method 4: Docker Compose
 
 Use environment variables similarly to Method 2
 
@@ -141,14 +161,14 @@ services:
       BOT_SLACK_WEBHOOK_URL: https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XxxxXXXXXxxxxxxxxxxxx
 ```
 
-#### Install
+##### Install
 
 ```bash
 bundle install
 npm install
 ```
 
-#### Store your App Store Connect password
+##### Store your App Store Connect password
 
 You can use _fastlane_'s [CredentialsManager](https://github.com/fastlane/fastlane/tree/master/credentials_manager) to store your password. Enter this command and it will prompt you for your password:
 
@@ -156,11 +176,11 @@ You can use _fastlane_'s [CredentialsManager](https://github.com/fastlane/fastla
 bundle exec fastlane fastlane-credentials add --username itc_username@example.com
 ```
 
-#### Using App Store Connect API
+##### Using App Store Connect API
 
 For more information on how to use `SPACESHIP_CONNECT_API_KEY`, `SPACESHIP_CONNECT_API_ISSUER_ID` and `SPACESHIP_CONNECT_API_KEY_ID` to skip 2FA authentication, check out [Apple Documentation](https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api) and [Using App Store Connect API on fastlane](https://docs.fastlane.tools/app-store-connect-api).
 
-#### Running
+##### Running
 
 ```bash
 npm start
@@ -174,18 +194,21 @@ forever start src/poll-itc.js
 
 # Project Structure
 
-### fetch_app_status.rb
+## `fetch_app_status.rb`
+
 Ruby script that uses [Spaceship](https://github.com/fastlane/fastlane/tree/master/spaceship) to connect to App Store Connect. It then stdouts a JSON blob with your app info.
 
-### poll-itc.js
+## `poll-itc.js`
+
 Node script to invoke the ruby script at certain intervals. It uses a key/value store to keep track of app status changes, and then invokes `post-update.js` once the status changes.
 
-### post-update.js
+## `post-update.js`
+
 Node script that uses Slack's node.js SDK to send a message as a bot. It also calculates the number of hours since submission.
 
 # Troubleshooting
 
-#### Why does my app hosted on Heroku reboots all the time?
+## Why does my app hosted on Heroku reboots all the time?
 
 Heroku does something called _Dyno cycling_ [at least once a day](https://devcenter.heroku.com/articles/dynos#automatic-dyno-restarts), and you can't prevent that from happening, unfortunately. Rebooting is fine, actually, except that you will lose all your database of app statuses that you collected since the last reboot. This means that we can't add nice features such as tracking the delta time between status changes (reliably) without persisting the information using an external service.
 
@@ -201,4 +224,4 @@ This app is heavily based on [@erikvillegas](https://github.com/erikvillegas)'s 
 
 # License
 
-This project is open source and covered by a standard 2-clause BSD license. That means you have to mention *Roger Oba* as the original author of this code and reproduce the LICENSE text inside your app, repository, project or research paper.
+This project is open source and covered by a standard 2-clause BSD license. That means you have to mention **Roger Oba** as the original author of this code and reproduce the LICENSE text inside your app, repository, project or research paper.
